@@ -87,7 +87,7 @@ CRITERIA = [
 ]
 COST_COL = "Startup Cost (USD)"
 
-PALETTE = ["#0E7C86", "#12324A", "#F2A93B", "#5B8DB8", "#7FB7A4", "#B9895B", "#8C6BB1", "#C45A5A"]
+PALETTE = ["#4FA89B", "#6C8EBF", "#E9B872", "#9CC5D9", "#A8D5BA", "#C9A7D8", "#E59F9F", "#7D8FA3"]
 
 
 def get_api_key() -> str:
@@ -106,32 +106,94 @@ def get_api_key() -> str:
 # =============================================================================
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Public+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Public+Sans:wght@400;500;600;700&display=swap');
 :root{
-  --bg:#F1F5F7; --ink:#12324A; --muted:#506A7C; --line:#D5DEE5;
-  --primary:#0E7C86; --amber:#F2A93B;
+  color-scheme: light;
+  --bg:#F7F9FB; --surface:#FFFFFF; --ink:#16293A; --text:#1F3447; --muted:#4D6578;
+  --line:#DCE5EC; --field:#C6D4DF;
+  --sky:#E1EEF7; --mint:#DDF1EC; --peach:#FFF3E0; --gold:#F0B35E;
+  --accent:#2E8B7E; --accent-dark:#236F65;
 }
-.stApp{background:var(--bg);}
+.stApp, [data-testid="stAppViewContainer"]{background:var(--bg) !important;color:var(--text);}
+[data-testid="stHeader"]{background:transparent !important;}
 html, body, .stApp, [data-testid="stMarkdownContainer"]{font-family:'Public Sans',sans-serif;}
-h1,h2,h3,h4{font-family:'Sora',sans-serif !important;color:var(--ink) !important;letter-spacing:-0.01em;}
-[data-testid="stMarkdownContainer"] p, [data-testid="stMarkdownContainer"] li{color:#1E3A4F;}
-section[data-testid="stSidebar"]{background:#FFFFFF;border-right:1px solid var(--line);}
+h1,h2,h3,h4{font-family:'Sora',sans-serif !important;color:var(--ink) !important;font-weight:700 !important;letter-spacing:-0.01em;}
+[data-testid="stMarkdownContainer"] p, [data-testid="stMarkdownContainer"] li{color:var(--text);font-size:1rem;line-height:1.6;}
+strong, b{color:var(--ink);font-weight:700;}
+[data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p{color:var(--muted) !important;}
+section[data-testid="stSidebar"]{background:var(--surface) !important;border-right:1px solid var(--line);}
 .block-container{padding-top:1.6rem;max-width:1250px;}
 
-.hero{background:var(--ink);padding:2rem 2.2rem;border-radius:14px;margin-bottom:1.2rem;}
-.hero h1{color:#FFFFFF !important;margin:0 0 .5rem 0;font-size:2.3rem;}
-.hero p{color:#C9DBE6 !important;margin:0;max-width:64ch;font-size:1.02rem;}
+/* ---------- form widgets: soft white fields with dark, readable text ---------- */
+[data-testid="stWidgetLabel"] p, [data-testid="stWidgetLabel"] label, label{color:var(--ink) !important;font-weight:600 !important;font-size:.95rem !important;}
+[data-baseweb="input"], [data-baseweb="textarea"], [data-baseweb="base-input"], [data-baseweb="select"] > div{
+  background:#FFFFFF !important;border:1px solid var(--field) !important;border-radius:8px !important;}
+input, textarea{background:#FFFFFF !important;color:var(--ink) !important;-webkit-text-fill-color:var(--ink) !important;font-weight:500;}
+input::placeholder, textarea::placeholder{color:#6F8499 !important;-webkit-text-fill-color:#6F8499 !important;opacity:1;font-weight:400;}
+[data-baseweb="select"] *{color:var(--ink) !important;font-weight:500;}
+[data-baseweb="popover"] ul, [data-baseweb="menu"]{background:#FFFFFF !important;}
+[data-baseweb="popover"] li{color:var(--ink) !important;}
+[data-baseweb="popover"] li:hover{background:var(--sky) !important;}
+[data-testid="stNumberInput"] button{background:#EEF3F7 !important;color:var(--ink) !important;}
+[data-testid="stNumberInput"] button svg{fill:var(--ink) !important;}
+div[data-testid="stForm"]{background:var(--surface);border:1px solid var(--line);border-radius:12px;}
 
-.card{background:#FFFFFF;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem;}
-.card h4{margin:0 0 .5rem 0;font-size:1.1rem;}
-.card .label{font-weight:600;color:var(--primary);font-size:.88rem;margin-top:.75rem;}
+/* sliders */
+[data-baseweb="slider"] [role="slider"]{background:var(--accent) !important;border-color:var(--accent) !important;}
+[data-testid="stSliderThumbValue"], [data-testid="stSliderThumbValue"] *{color:var(--ink) !important;font-weight:600;}
+[data-testid="stTickBarMin"], [data-testid="stTickBarMax"]{color:var(--muted) !important;}
+
+/* buttons */
+[data-testid="stBaseButton-primary"], [data-testid="stBaseButton-primaryFormSubmit"], button[kind="primary"], button[kind="primaryFormSubmit"]{
+  background:var(--accent) !important;border:1px solid var(--accent) !important;border-radius:8px !important;}
+[data-testid="stBaseButton-primary"]:hover, [data-testid="stBaseButton-primaryFormSubmit"]:hover{background:var(--accent-dark) !important;}
+[data-testid="stBaseButton-primary"] *, [data-testid="stBaseButton-primaryFormSubmit"] *, button[kind="primary"] *, button[kind="primaryFormSubmit"] *{
+  color:#FFFFFF !important;font-weight:700 !important;font-size:1rem !important;}
+[data-testid="stBaseButton-secondary"], [data-testid="stBaseButton-secondaryFormSubmit"], button[kind="secondary"]{
+  background:#FFFFFF !important;border:1px solid var(--field) !important;border-radius:8px !important;}
+[data-testid="stBaseButton-secondary"] *, button[kind="secondary"] *{color:var(--ink) !important;font-weight:600 !important;}
+
+/* alerts: soft tints with dark text */
+[data-testid="stAlert"], [data-testid="stAlertContainer"]{background:var(--sky) !important;border:1px solid #C9DDEC;border-radius:10px;}
+[data-testid="stAlert"] *, [data-testid="stAlertContainer"] *{color:var(--ink) !important;font-weight:500;}
+[data-baseweb="notification"][kind="positive"]{background:#E3F5EC !important;}
+[data-baseweb="notification"][kind="warning"]{background:#FFF3DD !important;}
+[data-baseweb="notification"][kind="negative"]{background:#FDE8E8 !important;}
+
+/* tabs */
+button[data-baseweb="tab"] p{color:var(--muted) !important;font-weight:600 !important;font-size:1rem !important;}
+button[data-baseweb="tab"][aria-selected="true"] p{color:var(--ink) !important;font-weight:700 !important;}
+[data-baseweb="tab-highlight"]{background:var(--accent) !important;}
+[data-baseweb="tab-border"]{background:var(--line) !important;}
+
+/* expanders, status, metrics */
+[data-testid="stExpander"], [data-testid="stStatus"]{background:var(--surface) !important;border:1px solid var(--line) !important;border-radius:10px !important;}
+[data-testid="stExpander"] summary p, [data-testid="stStatus"] summary p, [data-testid="stStatus"] p{color:var(--ink) !important;font-weight:600;}
+[data-testid="stExpander"] summary svg, [data-testid="stStatus"] summary svg{color:var(--ink) !important;}
+[data-testid="stMetric"]{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;}
+[data-testid="stMetricLabel"] *{color:var(--muted) !important;font-weight:600;}
+[data-testid="stMetricValue"] *{color:var(--ink) !important;font-weight:700;}
+[data-testid="stVerticalBlockBorderWrapper"]{border-color:var(--line) !important;}
+[data-testid="stMarkdownContainer"] table th{background:var(--mint);color:var(--ink);}
+[data-testid="stMarkdownContainer"] table td, [data-testid="stMarkdownContainer"] table th{border-color:var(--line);color:var(--ink);}
+
+/* ---------- custom components ---------- */
+.hero{background:linear-gradient(120deg,#DCEBF5 0%,#DDF1EC 100%);border:1px solid #CADFEA;
+      padding:2rem 2.2rem;border-radius:14px;margin-bottom:1.2rem;}
+.hero h1{color:var(--ink) !important;margin:0 0 .5rem 0;font-size:2.4rem;}
+.hero p{color:#2B4A60 !important;margin:0;max-width:64ch;font-size:1.08rem;font-weight:500;}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem;color:var(--text);}
+.card h4{margin:0 0 .5rem 0;font-size:1.12rem;color:var(--ink) !important;}
+.card .label{font-weight:700;color:var(--accent-dark);font-size:.9rem;margin-top:.8rem;}
 .card ul{margin:.2rem 0 0 1.1rem;padding:0;}
-.chip{display:inline-block;background:#E3F1F2;color:#0A5C64;border-radius:999px;
-      padding:2px 11px;margin:3px 5px 3px 0;font-size:.82rem;font-weight:500;}
-.pick{border:2px solid var(--amber);background:#FFFBF2;}
-.badge{background:var(--amber);color:#3A2600;font-weight:600;border-radius:6px;
+.card li, .card div{color:var(--text);}
+.chip{display:inline-block;background:var(--mint);color:#1B5A50;border-radius:999px;
+      padding:3px 12px;margin:3px 5px 3px 0;font-size:.85rem;font-weight:600;}
+.pick{border:2px solid var(--gold);background:var(--peach);}
+.badge{background:var(--gold);color:#3A2600;font-weight:700;border-radius:6px;
        padding:2px 10px;font-size:.8rem;margin-right:.5rem;font-family:'Public Sans',sans-serif;}
-.sev{float:right;color:var(--muted);font-size:.85rem;font-weight:500;}
+.sev{float:right;color:var(--muted);font-size:.85rem;font-weight:600;}
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
@@ -565,7 +627,7 @@ def style_fig(fig, height=380):
         height=height,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(family="Public Sans, sans-serif", color="#1E3A4F"),
+        font=dict(family="Public Sans, sans-serif", color="#1F3447"),
         margin=dict(l=10, r=10, t=40, b=10),
         colorway=PALETTE,
     )
@@ -607,7 +669,7 @@ def chart_radar(df):
 
 def chart_overall(df, pick):
     d = df.sort_values("Overall Score")
-    colors = ["#F2A93B" if s == pick else PALETTE[0] for s in d["Startup"]]
+    colors = ["#F0B35E" if s == pick else PALETTE[0] for s in d["Startup"]]
     fig = go.Figure(go.Bar(x=d["Overall Score"], y=d["Startup"], orientation="h", marker_color=colors))
     fig.update_layout(title="Weighted overall score (0-10)", xaxis=dict(range=[0, 10]))
     return style_fig(fig, 420)
@@ -615,7 +677,7 @@ def chart_overall(df, pick):
 
 def chart_cost(df, budget):
     fig = go.Figure(go.Bar(x=df["Startup"], y=df[COST_COL], marker_color=PALETTE[1]))
-    fig.add_hline(y=budget, line_dash="dash", line_color="#F2A93B",
+    fig.add_hline(y=budget, line_dash="dash", line_color="#F0B35E",
                   annotation_text="Your budget", annotation_position="top left")
     fig.update_layout(title="Estimated first-year cost vs. your budget (USD)")
     return style_fig(fig, 340)
